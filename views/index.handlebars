@@ -21,12 +21,62 @@
             </div>
             <div class="control">
             <a class="button is-danger">
-                Submit
+                <span class="icon">
+                    <i class="fas fa-hamburger" aria-hidden="true"></i>
+                </span>
             </a>
             </div>
-</div>
+        </div>
             
         </div>
     </div>
     </section>
+</div>
+{{!-- two columns for burgers waiting to eaten and devoured burgers --}}
+<div class="container">
+<div class="columns">
+    <div class="column">
+        <article class="panel is-danger">
+    <p class="panel-heading">
+    Burgers
+    </p>
+    <p class="panel-tabs">
+    <ul>
+        {{#each burgers}}
+            {{#unless devoured}}
+                <span><strong> {{this.id}} - {{this.burger_name}} </strong></span>
+                <button type="button" class="eatburger button is-danger" id ="eatbutton" data-id="{{this.id}}" data-newDevoured="{{devour}}">Eat it!</button>
+                <hr>
+            {{/unless}}
+        {{/each}}
+    </ul>
+    </p>
+
+</article>
+</div>
+
+<div class="column">
+
+    <div class="columns">
+    <div class="column">
+        <article class="panel is-danger">
+    <p class="panel-heading">
+    Devoured
+    </p>
+    <p class="panel-tabs">
+    <ul>
+        {{#each burgers}}
+            {{#if devoured}}
+                <span><strong> {{this.id}} - {{this.burger_name}} </strong></span>
+                <button type="button" class="trashburger button" id ="trashbutton" data-id="{{this.id}}" data-newDevoured="{{devour}}">Delete</span></button>
+                <hr>
+            {{/if}}
+        {{/each}}
+    </ul>
+    </p>
+
+</article>
+</div>
+</div>
+
 </div>

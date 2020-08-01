@@ -41,14 +41,16 @@
         Burgers
     </p>
     <p class="panel-tabs">
+    
+
     <ul>
-        {{#each burgers}}
-            {{#unless devoured}}
-                <span><strong> {{this.id}} - {{this.burger_name}} </strong></span>
-                <button type="button" class="eatburger button is-danger" id ="eatbutton" data-id="{{this.id}}" data-newDevoured="{{devour}}"><span class="icon is-small"> <i class="fas fa-utensils" aria-hidden="true"></i></span></button>
-                <hr>
-            {{/unless}}
-        {{/each}}
+    {{#each burgers}}
+        {{#unless devoured}}
+            <pre>{{this.id}}. {{this.burger_name}} </pre>
+            {{> burgers/burger-block devoured=true}}
+        {{/unless}}
+    {{/each}}
+
     </ul>
     </p>
 
@@ -64,14 +66,14 @@
         Devoured
     </p>
     <p class="panel-tabs">
-    <ul>
-        {{#each burgers}}
-            {{#if devoured}}
-                <span><strong> {{this.id}} - {{this.burger_name}} </strong></span>
-                <button type="button" class="trashburger button" id ="trashbutton" data-id="{{this.id}}" data-newDevoured="{{devour}}"><span class="icon is-small"> <i class="fas fa-trash-alt" aria-hidden="true"></i></span></span></button>
-                <hr>
-            {{/if}}
-        {{/each}}
+    <ul>    
+    {{#each burger_data}}
+        {{#if devoured}}
+            <span><strong> {{this.id}} - {{this.burger_name}} </strong></span>
+            {{> burgers/burger-block devoured=false}}
+        {{/if}}
+    {{/each}}
+
     </ul>
     </p>
 

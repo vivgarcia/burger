@@ -1,56 +1,38 @@
 // Dependencies
 var express = require("express");
+
 var router = express.Router();
 
-// Create the router for the app, and export the router at the end of your file.
+// Import the model (cat.js) to use its database functions.
 var burger = require("../models/burger.js");
-// Create routes and logic witin those routes where required
-router.get("/", function(req, res){
-    burger.selectAll(function(data){
-        var hbsObject = {
-            burgers: data
-        };
-        console.log(hbsObject);
-        res.render("index", hbsObject);
-    });
-});
-// Add new burger to the db
-router.post("/api/burgers", function(req, res){
-    burger.insertOne([
-        "burger_name", "devoured"
-    ], [
-        req.body.burger_name, req.body.devoured
-    ], function(result){
-        res.json({id: result.insertId});
-    });
-});
-// set devoured status to true
-router.put("/api/burgers/:id", function(req, res){
-    var condition = "id = " + req.params.id;
 
-    console.log("condition", condition);
-
-    burger.updateOne({ 
-        devoured: req.body.devoured 
-    }, condition, function(result){
-        if(result.changedRows === 0){
-            return res.status(404).end();
-        } else {
-            res.status(200).end();
-        }
-    });
+// Create all our routes and set up logic within those routes where required.
+router.get("/", function(req, res) {
+    res.redirect("/burgers");
 });
-// Delete da burger
-router.delete("/api/burgers/:id", function(req, res){
-    var condition = "id = " + req.params.id;
 
-    burger.deleteOne(condition, function(result){
-        if(result.changedRows === 0) {
-            return res.status(404).end();
-        }else{
-            res.status(200).end();
-        }
+router.get("/burgers", function(req, res){
+    burger.all(function(burgerData){
+        res.render("index", { burger_data: burgerData })
+    })
+});
+
+router.post('/burgers/create', function(req, res){
+    burger.create(req.body.burger_name, function(result){
+        console.log(result);
+        res.redirect("/")
     });
 });
 
+router.put("/api/burgers/:id", function(req, res) {
+    burger.update(req.params.id, function(result) {
+        // wrapper for orm.js that using MySQL update callback will return a log to console,
+        // render back to index with handle
+        console.log(result);
+        // Send back response and let page reload from .then in Ajax
+        res.sendStatus(200);
+    });
+});
+
+// Export routes for server.js to use.
 module.exports = router;
